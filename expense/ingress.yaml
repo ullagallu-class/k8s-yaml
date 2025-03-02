@@ -1,0 +1,86 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: expense-yaml-frontend
+  namespace: monitoring
+  annotations:
+    alb.ingress.kubernetes.io/load-balancer-name: "ullagallu-konka"
+    alb.ingress.kubernetes.io/group.name: "ullagallu"
+    alb.ingress.kubernetes.io/scheme: "internet-facing"
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/tags: Environment=dev,Team=test
+    alb.ingress.kubernetes.io/group.order: '10'
+    alb.ingress.kubernetes.io/healthcheck-path: '/health'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/certificate-arn: 'arn:aws:acm:ap-south-1:522814728660:certificate/439943f5-9c41-4b36-8568-b0b1ef1f3fb5'
+    alb.ingress.kubernetes.io/ssl-policy: 'ELBSecurityPolicy-2016-08'
+    external-dns.alpha.kubernetes.io/hostname: 'expense-prod.bapatlas.site'
+    external-dns.alpha.kubernetes.io/ttl: '10'
+    alb.ingress.kubernetes.io/actions.ssl-redirect: |
+      {"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301" }}
+spec:
+  ingressClassName: alb
+  rules:
+    - host: expense-prod.bapatlas.site
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
+    - http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: ssl-redirect
+                port:
+                  name: use-annotation
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: instana-ingress
+#   namespace: instana
+#   annotations:
+#     alb.ingress.kubernetes.io/load-balancer-name: "ullagallu-konka"
+#     alb.ingress.kubernetes.io/group.name: "ullagallu"
+#     alb.ingress.kubernetes.io/scheme: "internet-facing"
+#     alb.ingress.kubernetes.io/target-type: ip
+#     alb.ingress.kubernetes.io/tags: Environment=dev,Team=test
+#     alb.ingress.kubernetes.io/group.order: '20'
+#     alb.ingress.kubernetes.io/healthcheck-path: '/health'
+#     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+#     alb.ingress.kubernetes.io/certificate-arn: 'arn:aws:acm:ap-south-1:522814728660:certificate/44df7430-b976-4a62-aba8-f329e852f316'
+#     alb.ingress.kubernetes.io/ssl-policy: 'ELBSecurityPolicy-2016-08'
+#     external-dns.alpha.kubernetes.io/hostname: 'instana-prod.bapatlas.site'
+#     external-dns.alpha.kubernetes.io/ttl: '10'
+#     alb.ingress.kubernetes.io/actions.ssl-redirect: |
+#       {"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301" }}
+# spec:
+#   ingressClassName: alb
+#   rules:
+#     - host: instana-prod.bapatlas.site
+#       http:
+#         paths:
+#           - pathType: Prefix
+#             path: "/"
+#             backend:
+#               service:
+#                 name: dev-frontend
+#                 port:
+#                   number: 80
+#     - http:
+#         paths:
+#           - pathType: Prefix
+#             path: "/"
+#             backend:
+#               service:
+#                 name: ssl-redirect
+#                 port:
+#                   name: use-annotation
+# ---
