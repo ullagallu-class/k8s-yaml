@@ -4,4 +4,4 @@ metadata:
   name: mysql
 spec:
   type: ExternalName
-  externalName: spa-db.bapatlas.site
+  externalName: test-db.konkas.tech
