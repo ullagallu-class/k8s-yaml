@@ -6,12 +6,13 @@ metadata:
     app: frontend
     project: expense
 spec:
-  type: NodePort
+  type: ClusterIP
+  #type: NodePort
   selector:
     app: frontend
     project: expense
   ports:
     - port: 80
       targetPort: 80
-      nodePort: 32121
+      # nodePort: 32121
       protocol: TCP
