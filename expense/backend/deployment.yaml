@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: siva9666/expense-backend:v1
+          image: siva9666/expense-backend:node
           envFrom:
             - configMapRef:
                 name: backend-config
