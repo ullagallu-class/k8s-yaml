@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: expense-yaml-frontend
-  namespace: monitoring
+  namespace: expense
   annotations:
     alb.ingress.kubernetes.io/load-balancer-name: "ullagallu-konka"
     alb.ingress.kubernetes.io/group.name: "ullagallu"
